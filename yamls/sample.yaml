@@ -28,6 +28,8 @@ jobs:
       repeatMinutes: "0"
     actions:
     - name: endpoint:collectfile
+      parameters:
+        "File Path": "C:\\path\\config.ini"
       connector:
         name: Golden Config Source
     - name: endpoint:deployfile
@@ -55,5 +57,8 @@ jobs:
         Web: "false"
         Target: "C:\\"
     - name: download:file
+      parameters:
+        "Use Path" : "true"
+        "File Path": "C:\\path\\config.ini"
       connector:
         name: CDIR Results
