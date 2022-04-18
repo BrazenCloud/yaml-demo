@@ -18,7 +18,7 @@ jobs:
         id: psmodulecache
         uses: potatoqualitee/psmodulecache@v3.5
         with:
-          modules-to-cache: Runway,Runway.YAML
+          modules-to-cache: Runway.YAML
 
       - name: Run module cacher action
         id: cacher
