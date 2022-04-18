@@ -1,0 +1,42 @@
+name: Sync-Runway
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  syncJobs:
+    runs-on: ubuntu-latest
+
+    steps:
+      # PS Module Cacher
+      - name: Create variables for module cacher
+        id: psmodulecache
+        uses: potatoqualitee/psmodulecache@v3.5
+        with:
+          modules-to-cache: Runway,Runway.YAML
+
+      - name: Run module cacher action
+        id: cacher
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.psmodulecache.outputs.modulepath }}
+          key: ${{ steps.psmodulecache.outputs.keygen }}
+
+      - name: Install PowerShell modules
+        if: steps.cacher.outputs.cache-hit != 'true'
+        uses: potatoqualitee/psmodulecache@v3.5
+      
+      - uses: actions/checkout@v2
+
+      - name: Sync Jobs
+        shell: pwsh
+        run: |
+          Connect-Runway -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString "${{ secrets.RUNWAY_PASSWORD }}" -AsPlainText -Force)
+          foreach ($yaml in (Get-ChildItem .\*.yaml)) {
+            Sync-RwResourceYaml -PathToYaml $yaml.FullName
+          }

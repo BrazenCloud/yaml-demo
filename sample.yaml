@@ -1,0 +1,59 @@
+connectors:
+  "Golden Config Source":
+    action:
+      name: endpoint:collectfile
+    runner:
+      name: NonMember1
+    parameters:
+      "File Path": "C:\\path\\config.ini"
+  "CDIR Results":
+    action:
+      name: download:file
+    runner:
+      name: DC1
+    parameters:
+      "Use Path": "true"
+      Path: "C:\\path\\to\\directory"
+
+
+jobs:
+  "Golden Config Deploy":
+    runners:
+      tags:
+      - Customer1
+    schedule:
+      type: RunEvery
+      weekdays: M--T---
+      time: 08:00
+      repeatMinutes: "0"
+    actions:
+    - name: endpoint:collectfile
+      connector:
+        name: Golden Config Source
+    - name: endpoint:deployfile
+      parameters:
+        "File Path": "C:\\path\\config.ini"
+  "CDIR Incident Response":
+    runners:
+      tags:
+      - Customer2
+      - IR
+    schedule:
+      type: RunNow
+    actions:
+    - name: secops:cdirwparams
+      parameters:
+        MemoryDump: "false"
+        MFT: "false"
+        Secure: "false"
+        UsnJrnl: "false"
+        EventLog: "true"
+        Prefetch: "false"
+        Registry: "true"
+        WMI: "false"
+        SRUM: "false"
+        Web: "false"
+        Target: "C:\\"
+    - name: download:file
+      connector:
+        name: CDIR Results
