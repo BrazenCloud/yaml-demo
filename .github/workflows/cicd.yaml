@@ -36,7 +36,7 @@ jobs:
       - name: Sync Jobs
         shell: pwsh
         run: |
-          Connect-Runway -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString "${{ secrets.RUNWAY_PASSWORD }}" -AsPlainText -Force)
+          Connect-Runway -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString ${{ secrets.RUNWAY_PASSWORD }} -AsPlainText -Force)
           foreach ($yaml in (Get-ChildItem .\*.yaml)) {
             Sync-RwResourceYaml -PathToYaml $yaml.FullName
           }
