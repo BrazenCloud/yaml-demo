@@ -40,5 +40,6 @@ jobs:
           gci env:
           Connect-Runway -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString "${{ secrets.RUNWAY_PASSWORD }}" -AsPlainText -Force)
           foreach ($yaml in (Get-ChildItem "$($env:GITHUB_WORKSPACE)/yamls/*.yaml")) {
+            $yaml.FullName
             Sync-RwResourceYaml -PathToYaml $yaml.FullName
           }
