@@ -36,6 +36,8 @@ jobs:
       - name: Sync Jobs
         shell: pwsh
         run: |
+          Write-Host "$($env:GITHUB_WORKSPACE)/yamls/*.yaml"
+          gci env:
           Connect-Runway -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString "${{ secrets.RUNWAY_PASSWORD }}" -AsPlainText -Force)
           foreach ($yaml in (Get-ChildItem "$($env:GITHUB_WORKSPACE)/yamls/*.yaml")) {
             Sync-RwResourceYaml -PathToYaml $yaml.FullName
