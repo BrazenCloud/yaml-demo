@@ -1,0 +1,29 @@
+connectors:
+  "Golden Config Source":
+    action:
+      name: endpoint:collectfile
+    runner:
+      name: NonMember1
+    parameters:
+      "File Path": "C:\\path\\config.ini"
+
+
+jobs:
+  "Golden Config Deploy":
+    runners:
+      tags:
+      - Customer1
+    schedule:
+      type: RunEvery
+      weekdays: M--T---
+      time: 08:00
+      repeatMinutes: "0"
+    actions:
+    - name: endpoint:collectfile
+      parameters:
+        "File Path": "C:\\path\\config.ini"
+      connector:
+        name: Golden Config Source
+    - name: endpoint:deployfile
+      parameters:
+        "File Path": "C:\\path\\config.ini"
