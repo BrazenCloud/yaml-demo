@@ -3,6 +3,8 @@ name: Sync-Runway
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
   workflow_dispatch:
 
@@ -31,7 +33,18 @@ jobs:
       
       - uses: actions/checkout@v2
 
-      - name: Sync Jobs
+      - name: Test Sync Jobs on PR
+        if: ${{ github.event_name == 'pull_request' }}
+        shell: pwsh
+        run: |
+          $InformationPreference = 'Continue'
+          Connect-Runway -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString "${{ secrets.RUNWAY_PASSWORD }}" -AsPlainText -Force)
+          foreach ($yaml in (Get-ChildItem "$($env:GITHUB_WORKSPACE)/yamls/*.yaml")) {
+            Sync-RwResourceYaml -PathToYaml $yaml.FullName -Test
+          }
+
+      - name: Sync Jobs on push
+        if: ${{ github.event_name == 'push' }}
         shell: pwsh
         run: |
           $InformationPreference = 'Continue'
