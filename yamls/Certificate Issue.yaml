@@ -9,6 +9,9 @@ connectors:
 
 jobs:
   "Certificate Issue":
+    tags:
+      - Demo
+      - FromYaml
     runners:
     schedule:
       type: RunOnce

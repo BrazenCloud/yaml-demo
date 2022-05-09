@@ -10,29 +10,32 @@ connectors:
 
 jobs:
   "CDIR Incident Response":
+    tags:
+      - Demo
+      - FromYaml
     runners:
       tags:
-      - Customer2
-      - IR
+        - Customer2
+        - IR
     schedule:
       type: RunNow
     actions:
-    - name: secops:cdirwparams
-      parameters:
-        MemoryDump: "false"
-        MFT: "false"
-        Secure: "false"
-        UsnJrnl: "false"
-        EventLog: "true"
-        Prefetch: "false"
-        Registry: "true"
-        WMI: "false"
-        SRUM: "false"
-        Web: "false"
-        Target: "C:\\"
-    - name: download:file
-      parameters:
-        "Use Path" : "true"
-        "File Path": "C:\\path\\config.ini"
-      connector:
-        name: CDIR Results
+      - name: secops:cdirwparams
+        parameters:
+          MemoryDump: "false"
+          MFT: "false"
+          Secure: "false"
+          UsnJrnl: "false"
+          EventLog: "true"
+          Prefetch: "false"
+          Registry: "true"
+          WMI: "false"
+          SRUM: "false"
+          Web: "false"
+          Target: "C:\\"
+      - name: download:file
+        parameters:
+          "Use Path": "true"
+          "File Path": "C:\\path\\config.ini"
+        connector:
+          name: CDIR Results
