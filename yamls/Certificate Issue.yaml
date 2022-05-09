@@ -1,0 +1,31 @@
+connectors:
+  SubCA:
+    action:
+      name: ad:cs:signcsr
+    runner:
+      name: SubCA1
+    parameters:
+      "Certificate Template": WebServer
+
+jobs:
+  "Certificate Issue":
+    runners:
+    schedule:
+      type: RunOnce
+      weekdays:
+      time:
+      repeatMinutes:
+    actions:
+      - name: ad:cs:createcsr
+        parameters:
+          "Website Name": Default Web Site
+          Subject: Generated
+          "Machine Key Set": "true"
+      - name: ad:cs:signcsr
+        parameters:
+          "Certificate Template": "WebServer"
+        connector:
+          name: SubCA
+      - name: ad:cs:completecsr
+        parameters:
+          "Machine Key Set": "true"
