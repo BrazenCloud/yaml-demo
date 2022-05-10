@@ -1,14 +1,14 @@
 connectors:
-  "Golden Config Source":
+  Golden Config Source:
     action:
       name: endpoint:collectfile
     runner:
       name: NonMember1
     parameters:
-      "File Path": "C:\\path\\config.ini"
+      File Path: "C:\\path\\config.ini"
 
 jobs:
-  "Golden Config Deploy":
+  Golden Config Deploy:
     tags:
       - Demo
       - FromYaml
@@ -23,9 +23,9 @@ jobs:
     actions:
       - name: endpoint:collectfile
         parameters:
-          "File Path": "C:\\path\\config.ini"
+          File Path: "C:\\path\\config.ini"
         connector:
           name: Golden Config Source
       - name: endpoint:deployfile
         parameters:
-          "File Path": "C:\\path\\config.ini"
+          File Path: "C:\\path\\config.ini"

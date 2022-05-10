@@ -5,10 +5,10 @@ connectors:
     runner:
       name: SubCA1
     parameters:
-      "Certificate Template": WebServer
+      Certificate Template: WebServer
 
 jobs:
-  "Certificate Issue":
+  Certificate Issue:
     tags:
       - Demo
       - FromYaml
@@ -21,14 +21,14 @@ jobs:
     actions:
       - name: ad:cs:createcsr
         parameters:
-          "Website Name": Default Web Site
+          Website Name: Default Web Site
           Subject: Generated
-          "Machine Key Set": "true"
+          Machine Key Set: "true"
       - name: ad:cs:signcsr
         parameters:
-          "Certificate Template": "WebServer"
+          Certificate Template: "WebServer"
         connector:
           name: SubCA
       - name: ad:cs:completecsr
         parameters:
-          "Machine Key Set": "true"
+          Machine Key Set: "true"

@@ -1,15 +1,15 @@
 connectors:
-  "CDIR Results":
+  CDIR Results:
     action:
       name: download:file
     runner:
       name: DC1
     parameters:
-      "Use Path": "true"
+      Use Path: "true"
       Path: "C:\\path\\to\\directory"
 
 jobs:
-  "CDIR Incident Response":
+  CDIR Incident Response:
     tags:
       - Demo
       - FromYaml
@@ -35,7 +35,7 @@ jobs:
           Target: "C:\\"
       - name: download:file
         parameters:
-          "Use Path": "true"
-          "File Path": "C:\\path\\config.ini"
+          Use Path: "true"
+          File Path: "C:\\path\\config.ini"
         connector:
           name: CDIR Results
