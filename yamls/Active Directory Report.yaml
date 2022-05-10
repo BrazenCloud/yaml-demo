@@ -1,0 +1,47 @@
+jobs:
+  "Active Directory Report":
+    tags:
+      - ActiveDirectory
+      - FromYaml
+      - Demo
+    schedule:
+      type: RunEvery
+      weekdays: M------
+      time: 08:00
+      repeatMinutes: "0"
+    runners:
+      tags:
+        - DC
+    actions:
+      - name: ad:users:getFilter
+        parameters:
+          Filter: "*"
+          "Additional properties": "Created,LastLogonDate,PasswordNeverExpires,LockedOut"
+          "CSV Out": "true"
+      - name: ad:computers:getFilter
+        parameters:
+          Filter: "*"
+          "Additional properties": "Created,LastLogonDate"
+          "CSV Out": "true"
+      - name: ad:dcs:get
+        parameters:
+          "CSV Out": "true"
+      - name: ad:pwpolicies:getDefault
+        parameters:
+          "CSV Out": "true"
+      - name: ad:pwpolicies:getFineGrained
+        parameters:
+          "CSV Out": "true"
+      - name: ad:report:filter
+        parameters:
+          "Report to filter": users
+          Filters: "$_.PasswordNeverExpires -eq $true,$_.LockedOut,$_.Enabled -eq $false,$_.Created -ge (Get-Date).AddDays(-16)"
+      - name: ad:report:group
+        parameters:
+          "Report to group": computers
+          "Properties to Group": OperatingSystem
+      - name: ad:report:group
+        parameters:
+          "Report to group": dcs
+          "Properties to Group": OperatingSystem
+      - name: ad:report:combine

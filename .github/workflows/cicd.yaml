@@ -2,9 +2,9 @@ name: Sync-Runway
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
   workflow_dispatch:
 
@@ -30,7 +30,7 @@ jobs:
       - name: Install PowerShell modules
         if: steps.cacher.outputs.cache-hit != 'true'
         uses: potatoqualitee/psmodulecache@v3.5
-      
+
       - uses: actions/checkout@v2
 
       - name: Test Sync Jobs on PR
@@ -40,6 +40,7 @@ jobs:
           $InformationPreference = 'Continue'
           Connect-Runway -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString "${{ secrets.RUNWAY_PASSWORD }}" -AsPlainText -Force)
           foreach ($yaml in (Get-ChildItem "$($env:GITHUB_WORKSPACE)/yamls/*.yaml")) {
+            Write-Host $yaml.Name
             Sync-RwResourceYaml -PathToYaml $yaml.FullName -Test
           }
 
@@ -50,5 +51,6 @@ jobs:
           $InformationPreference = 'Continue'
           Connect-Runway -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString "${{ secrets.RUNWAY_PASSWORD }}" -AsPlainText -Force)
           foreach ($yaml in (Get-ChildItem "$($env:GITHUB_WORKSPACE)/yamls/*.yaml")) {
+            Write-Host $yaml.Name
             Sync-RwResourceYaml -PathToYaml $yaml.FullName
           }
