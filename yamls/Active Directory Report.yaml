@@ -36,12 +36,15 @@ jobs:
         parameters:
           "Report to filter": users
           Filters: "$_.PasswordNeverExpires -eq $true,$_.LockedOut,$_.Enabled -eq $false,$_.Created -ge (Get-Date).AddDays(-16)"
+          "CSV Out": "true"
       - name: ad:report:group
         parameters:
           "Report to group": computers
           "Properties to Group": OperatingSystem
+          "CSV Out": "true"
       - name: ad:report:group
         parameters:
           "Report to group": dcs
           "Properties to Group": OperatingSystem
+          "CSV Out": "true"
       - name: ad:report:combine
