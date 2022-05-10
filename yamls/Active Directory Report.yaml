@@ -1,5 +1,5 @@
 jobs:
-  "Active Directory Report":
+  Active Directory Report:
     tags:
       - ActiveDirectory
       - FromYaml
@@ -16,35 +16,35 @@ jobs:
       - name: ad:users:getFilter
         parameters:
           Filter: "*"
-          "Additional properties": "Created,LastLogonDate,PasswordNeverExpires,LockedOut"
-          "CSV Out": "true"
+          Additional properties: "Created,LastLogonDate,PasswordNeverExpires,LockedOut"
+          CSV Out: "true"
       - name: ad:computers:getFilter
         parameters:
           Filter: "*"
-          "Additional properties": "Created,LastLogonDate"
-          "CSV Out": "true"
+          Additional properties: "Created,LastLogonDate"
+          CSV Out: "true"
       - name: ad:dcs:get
         parameters:
-          "CSV Out": "true"
+          CSV Out: "true"
       - name: ad:pwpolicies:getDefault
         parameters:
-          "CSV Out": "true"
+          CSV Out: "true"
       - name: ad:pwpolicies:getFineGrained
         parameters:
-          "CSV Out": "true"
+          CSV Out: "true"
       - name: ad:report:filter
         parameters:
-          "Report to filter": users
+          Report to filter: users
           Filters: "$_.PasswordNeverExpires -eq $true,$_.LockedOut,$_.Enabled -eq $false,$_.Created -ge (Get-Date).AddDays(-16)"
-          "CSV Out": "true"
+          CSV Out: "true"
       - name: ad:report:group
         parameters:
-          "Report to group": computers
-          "Properties to Group": OperatingSystem
-          "CSV Out": "true"
+          Report to group: computers
+          Properties to Group: OperatingSystem
+          CSV Out: "true"
       - name: ad:report:group
         parameters:
-          "Report to group": dcs
-          "Properties to Group": OperatingSystem
-          "CSV Out": "true"
+          Report to group: dcs
+          Properties to Group: OperatingSystem
+          CSV Out: "true"
       - name: ad:report:combine
