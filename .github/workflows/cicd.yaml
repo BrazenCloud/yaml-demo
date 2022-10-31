@@ -14,22 +14,10 @@ jobs:
 
     steps:
       # PS Module Cacher
-      - name: Create variables for module cacher
-        id: psmodulecache
+      - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v5.1
         with:
-          modules-to-cache: Runway.YAML
-
-      - name: Run module cacher action
-        id: cacher
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.psmodulecache.outputs.modulepath }}
-          key: ${{ steps.psmodulecache.outputs.keygen }}
-
-      - name: Install PowerShell modules
-        if: steps.cacher.outputs.cache-hit != 'true'
-        uses: potatoqualitee/psmodulecache@v5.1
+          modules-to-cache: BrazenCloud,BrazenCloud.YAML
 
       - uses: actions/checkout@v2
 
@@ -38,10 +26,10 @@ jobs:
         shell: pwsh
         run: |
           $InformationPreference = 'Continue'
-          Connect-Runway -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString "${{ secrets.RUNWAY_PASSWORD }}" -AsPlainText -Force)
+          Connect-BrazenCloud -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString "${{ secrets.RUNWAY_PASSWORD }}" -AsPlainText -Force)
           foreach ($yaml in (Get-ChildItem "$($env:GITHUB_WORKSPACE)/yamls/*.yaml")) {
             Write-Host $yaml.Name
-            Sync-RwResourceYaml -PathToYaml $yaml.FullName -Test
+            Sync-BcResourceYaml -PathToYaml $yaml.FullName -Test
           }
 
       - name: Sync Jobs on push
@@ -49,8 +37,8 @@ jobs:
         shell: pwsh
         run: |
           $InformationPreference = 'Continue'
-          Connect-Runway -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString "${{ secrets.RUNWAY_PASSWORD }}" -AsPlainText -Force)
+          Connect-BrazenCloud -Email ${{ secrets.RUNWAY_EMAIL }} -Password (ConvertTo-SecureString "${{ secrets.RUNWAY_PASSWORD }}" -AsPlainText -Force)
           foreach ($yaml in (Get-ChildItem "$($env:GITHUB_WORKSPACE)/yamls/*.yaml")) {
             Write-Host $yaml.Name
-            Sync-RwResourceYaml -PathToYaml $yaml.FullName
+            Sync-BcResourceYaml -PathToYaml $yaml.FullName
           }
