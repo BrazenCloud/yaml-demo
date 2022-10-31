@@ -16,7 +16,7 @@ jobs:
       # PS Module Cacher
       - name: Create variables for module cacher
         id: psmodulecache
-        uses: potatoqualitee/psmodulecache@v3.5
+        uses: potatoqualitee/psmodulecache@v5.1
         with:
           modules-to-cache: Runway.YAML
 
@@ -29,7 +29,7 @@ jobs:
 
       - name: Install PowerShell modules
         if: steps.cacher.outputs.cache-hit != 'true'
-        uses: potatoqualitee/psmodulecache@v3.5
+        uses: potatoqualitee/psmodulecache@v5.1
 
       - uses: actions/checkout@v2
 
